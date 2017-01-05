@@ -27,11 +27,11 @@ class StaticFile extends Interceptor {
   const StaticFile({this.charset: 'utf-8', this.encoding: UTF8});
 
   @InputRouteResponse()
-  Future<Response<Stream>> post(Response<JaguarFile> response) async {
+  Future<Response<dynamic>> post(Response<JaguarFile> response) async {
     File f = new File(response.value.filePath);
+    print(response.value.filePath);
     if (!await f.exists()) {
-      // TODO: add better error
-      throw "File not found";
+      return new Response<String>("Not Found", statusCode: 404);
     }
     Map<String, String> headers = {};
     //  TODO: add more content-type
