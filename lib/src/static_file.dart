@@ -13,11 +13,9 @@ class WrapStaticFile implements RouteWrapper<StaticFile> {
   final String id;
   final Map<Symbol, MakeParam> makeParams;
 
-  const WrapStaticFile(
-      {this.charset: 'utf-8', this.encoding: UTF8, this.id, this.makeParams});
+  const WrapStaticFile({this.charset: 'utf-8', this.encoding: UTF8, this.id, this.makeParams});
 
-  StaticFile createInterceptor() =>
-      new StaticFile(charset: charset, encoding: encoding);
+  StaticFile createInterceptor() => new StaticFile(charset: charset, encoding: encoding);
 }
 
 class StaticFile extends Interceptor {
@@ -29,20 +27,41 @@ class StaticFile extends Interceptor {
   @InputRouteResponse()
   Future<Response<dynamic>> post(Response<JaguarFile> response) async {
     File f = new File(response.value.filePath);
-    print(response.value.filePath);
     if (!await f.exists()) {
       return new Response<String>("Not Found", statusCode: 404);
     }
     Map<String, String> headers = {};
     //  TODO: add more content-type
-    if (f.path.endsWith(".html")) {
-      headers['Content-Type'] = "text/html; charset=$charset";
-    } else if (f.path.endsWith(".js")) {
-      headers['Content-Type'] = "text/javascript; charset=$charset";
-    } else if (f.path.endsWith(".css")) {
-      headers['Content-Type'] = "text/css; charset=$charset";
+
+    switch (f.path.split(".").last) {
+      case "html":
+        headers['Content-Type'] = "text/html;";
+        break;
+      case "js":
+        headers['Content-Type'] = "application/javascript;";
+        break;
+      case "css":
+        headers['Content-Type'] = "text/css;";
+        break;
+      case "dart":
+        headers['Content-Type'] = "application/dart;";
+        break;
+      case "png":
+        headers['Content-Type'] = "image/png;";
+        break;
+      case "jpg":
+        headers['Content-Type'] = "image/jpeg;";
+        break;
+      case "jpeg":
+        headers['Content-Type'] = "image/jpeg;";
+        break;
+      case "gif":
+        headers['Content-Type'] = "image/gif;";
+        break;
+      default:
+        headers['Content-Type'] = "text/plain;";
     }
-    return new Response<Stream>(await f.openRead(),
-        statusCode: 200, headers: headers);
+    headers['Content-Type'] += " charset=$charset;";
+    return new Response<Stream>(await f.openRead(), statusCode: 200, headers: headers);
   }
 }
