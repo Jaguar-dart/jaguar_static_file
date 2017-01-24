@@ -7,73 +7,75 @@ import 'dart:convert';
 import 'package:jaguar/jaguar.dart';
 
 class WrapStaticFile implements RouteWrapper<StaticFile> {
+  /// Optionally force charset/encoding
   final String charset;
-  final Encoding encoding;
 
   final String id;
+
   final Map<Symbol, MakeParam> makeParams;
 
-  const WrapStaticFile(
-      {this.charset: 'utf-8', this.encoding: UTF8, this.id, this.makeParams});
+  const WrapStaticFile({this.charset, this.id, this.makeParams});
 
-  StaticFile createInterceptor() =>
-      new StaticFile(charset: charset, encoding: encoding);
+  StaticFile createInterceptor() => new StaticFile(charset: charset);
 }
 
 class StaticFile extends Interceptor {
+  /// Optionally force charset/encoding
   final String charset;
-  final Encoding encoding;
 
   static const String file_not_found = "File Not Found";
 
-  const StaticFile({this.charset: 'utf-8', this.encoding: UTF8});
+  const StaticFile({this.charset});
 
   @InputRouteResponse()
-  Future<Response<Stream>> post(Response<JaguarFile> incoming) async {
+  Future<Response<Stream<List<int>>>> post(
+      Response<JaguarFile> incoming) async {
     File f = new File(incoming.value.filePath);
     if (!await f.exists()) {
       throw new JaguarError(404, file_not_found, file_not_found);
     }
 
-    //  TODO: add more content-type
-
-    final Response<Stream> response =
-        new Response<Stream>.cloneExceptValue(incoming);
+    final Response<Stream<List<int>>> response =
+        new Response<Stream<List<int>>>.cloneExceptValue(incoming);
     response.value = await f.openRead();
 
-    String contentType;
+    String mimeType;
 
     switch (f.path.split(".").last) {
       case "html":
-        contentType += "text/html;";
+        mimeType = "text/html";
         break;
       case "js":
-        contentType += "application/javascript;";
+        mimeType = "application/javascript";
         break;
       case "css":
-        contentType += "text/css;";
+        mimeType = "text/css";
         break;
       case "dart":
-        contentType += "application/dart;";
+        mimeType = "application/dart";
         break;
       case "png":
-        contentType += "image/png;";
+        mimeType = "image/png";
         break;
       case "jpg":
-        contentType += "image/jpeg;";
+        mimeType = "image/jpeg";
         break;
       case "jpeg":
-        contentType += "image/jpeg;";
+        mimeType = "image/jpeg";
         break;
       case "gif":
-        contentType += "image/gif;";
+        mimeType = "image/gif";
         break;
       default:
-        contentType += "text/plain;";
+        mimeType = "text/plain";
         break;
     }
-    contentType += " charset=$charset;";
-    response.setContentType(contentType);
+    if (mimeType is String) {
+      response.headers.mimeType = mimeType;
+    }
+    if (charset is String) {
+      response.headers.charset = charset;
+    }
     return response;
   }
 }
