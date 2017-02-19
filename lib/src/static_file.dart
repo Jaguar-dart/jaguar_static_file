@@ -6,15 +6,13 @@ import 'dart:convert';
 
 import 'package:jaguar/jaguar.dart';
 
-class WrapStaticFile implements RouteWrapper<StaticFile> {
+class WrapStaticFile extends RouteWrapper<StaticFile> {
   /// Optionally force charset/encoding
   final String charset;
 
   final String id;
 
-  final Map<Symbol, MakeParam> makeParams;
-
-  const WrapStaticFile({this.charset, this.id, this.makeParams});
+  const WrapStaticFile({this.charset, this.id});
 
   StaticFile createInterceptor() => new StaticFile(charset: charset);
 }
