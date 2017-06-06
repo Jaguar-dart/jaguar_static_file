@@ -11,7 +11,7 @@ import 'package:jaguar_static_file/jaguar_static_file.dart';
 class MyApi extends _$MyApi {
 
       @Route(path: '/file', methods: const ["GET"])
-      @WrapStaticFile()
+      @StaticFile()
       getFile() {
           return new JaguarFile("filePath");
       }

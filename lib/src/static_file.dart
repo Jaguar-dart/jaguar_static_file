@@ -2,22 +2,10 @@ library static_file.src;
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:jaguar/jaguar.dart';
 
-class WrapStaticFile extends RouteWrapper<StaticFile> {
-  /// Optionally force charset/encoding
-  final String charset;
-
-  final String id;
-
-  const WrapStaticFile({this.charset, this.id});
-
-  StaticFile createInterceptor() => new StaticFile(charset: charset);
-}
-
-class StaticFile extends Interceptor {
+class StaticFile extends Interceptor<Null, Stream<List<int>>, JaguarFile> {
   /// Optionally force charset/encoding
   final String charset;
 
@@ -25,9 +13,10 @@ class StaticFile extends Interceptor {
 
   const StaticFile({this.charset});
 
-  @InputRouteResponse()
+  Null pre(Context ctx) => null;
+
   Future<Response<Stream<List<int>>>> post(
-      Response<JaguarFile> incoming) async {
+      Context ctx, Response<JaguarFile> incoming) async {
     File f = new File(incoming.value.filePath);
     if (!await f.exists()) {
       throw new JaguarError(404, file_not_found, file_not_found);
