@@ -2,8 +2,12 @@ library static_file.src;
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:collection';
 
 import 'package:jaguar/jaguar.dart';
+import 'package:path/path.dart' as p;
+
+part 'handler.dart';
 
 class StaticFile extends Interceptor<Null, Stream<List<int>>, JaguarFile> {
   /// Optionally force charset/encoding
