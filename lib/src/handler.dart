@@ -33,13 +33,13 @@ class StaticServer implements RequestHandler {
     return path;
   }
 
-  Future<Response<Stream<List<int>>>> handleRequest(Request req,
+  Future<Response<Stream<List<int>>>> handleRequest(Context ctx,
       {String prefix}) async {
-    if (!matches(req.uri)) {
+    if (!matches(ctx.req.uri)) {
       return null;
     }
 
-    final String path = _getTargetUrl(req.uri);
+    final String path = _getTargetUrl(ctx.req.uri);
 
     File f = new File(path);
     if (!await f.exists()) {

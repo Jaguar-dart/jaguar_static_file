@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
 import 'package:jaguar/jaguar.dart';
-import 'package:jaguar_reflect/jaguar_reflect.dart';
 import 'package:jaguar_static_file/jaguar_static_file.dart';
 
 @Api()
@@ -29,7 +28,7 @@ Future main() async {
 
     setUpAll(() async {
       server = new Jaguar();
-      server.addApi(reflectJaguar(new MyApi()));
+      server.addApiReflected(new MyApi());
       await server.serve();
     });
 

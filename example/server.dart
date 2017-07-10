@@ -3,7 +3,6 @@ library jaguar_static_file.example;
 import 'dart:async';
 import 'dart:io';
 import 'package:jaguar/jaguar.dart';
-import 'package:jaguar_reflect/jaguar_reflect.dart';
 import 'package:jaguar_static_file/jaguar_static_file.dart';
 
 @Api()
@@ -23,6 +22,6 @@ class MyApi {
 
 Future main() async {
   final server = new Jaguar();
-  server.addApi(reflectJaguar(new MyApi()));
+  server.addApiReflected(new MyApi());
   await server.serve();
 }
