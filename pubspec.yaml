@@ -1,11 +1,11 @@
 name: jaguar_static_file
 version: 0.5.3
 description: Static file handler for jaguar
-
 authors:
 - Ravi Teja Gudapati <tejainece@gmail.com>
 - Kevin Segaud <segaud.kevin@gmail.com>
-homepage: http://jaguar-dart.github.io
+homepage: https://github.com/Jaguar-dart/jaguar_static_file
+documentation:
 
 environment:
   sdk: ">=1.8.0 <2.0.0"
