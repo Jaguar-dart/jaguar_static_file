@@ -23,7 +23,7 @@ class StaticFile extends Interceptor<Null, Stream<List<int>>, JaguarFile> {
       Context ctx, Response<JaguarFile> incoming) async {
     File f = new File(incoming.value.filePath);
     if (!await f.exists()) {
-      throw new JaguarError(404, file_not_found, file_not_found);
+      throw new Response(null, statusCode: HttpStatus.NOT_FOUND);
     }
 
     final Response<Stream<List<int>>> response =

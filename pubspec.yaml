@@ -1,5 +1,5 @@
 name: jaguar_static_file
-version: 0.5.2
+version: 0.5.3
 description: Static file handler for jaguar
 
 authors:
@@ -11,7 +11,7 @@ environment:
   sdk: ">=1.8.0 <2.0.0"
 
 dependencies:
-  jaguar: ^0.6.5
+  jaguar: ^0.6.7
 
 dev_dependencies:
   http: '>=0.11.3+13 <0.12.0'
