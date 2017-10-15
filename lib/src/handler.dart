@@ -129,7 +129,13 @@ class StaticFileHandler implements RequestHandler {
     List<String> segs = reqUri.pathSegments.toList();
 
     if (pathSegments.length > 0) {
-      segs.removeRange(0, pathSegments.length);
+      if (pathSegments.last.endsWith('*')) {
+        if (pathSegments.length > 1) {
+          segs = segs.sublist(pathSegments.length - 1);
+        }
+      } else {
+        segs = segs.sublist(pathSegments.length);
+      }
     }
 
     final ctx = new p.Context();

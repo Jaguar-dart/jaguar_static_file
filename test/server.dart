@@ -40,9 +40,7 @@ Future main() async {
       Uri uri = new Uri.http('localhost:8080', '/file');
       http.Response response = await http.get(uri);
 
-      expect(
-          response.body,
-          '''.hello {
+      expect(response.body, '''.hello {
     background-color: red;
 }''');
       expect(response.statusCode, 200);
