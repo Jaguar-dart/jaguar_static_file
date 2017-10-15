@@ -1,3 +1,13 @@
+/// Provides two ways to serve static files
+///   1) [StaticFileHandler]
+///   2) [StaticFile]
+///
+/// [StaticFileHandler] is [RequestHandler] based. It can be directly added to
+/// [Jaguar] server using `addApi` method or included in an [Api] using [IncludeApi]
+/// annotation.
+///
+/// [StaticFile] is an interceptor that substituted [JaguarFile] in response with
+/// actual content of the file [JaguarFile] points to.
 library static_file.src;
 
 import 'dart:async';
@@ -9,11 +19,12 @@ import 'package:path/path.dart' as p;
 
 part 'handler.dart';
 
+/// [StaticFile] is an interceptor that serves the content of the file pointed to
+/// by [JaguarFile] in the response value. It substitutes [JaguarFile] in response
+/// value with actual file content
 class StaticFile extends Interceptor<Null, Stream<List<int>>, JaguarFile> {
   /// Optionally force charset/encoding
   final String charset;
-
-  static const String file_not_found = "File Not Found";
 
   const StaticFile({this.charset});
 

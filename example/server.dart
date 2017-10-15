@@ -21,7 +21,9 @@ class MyApi {
 }
 
 Future main() async {
-  final server = new Jaguar();
+  final server = new Jaguar(port: 8081);
   server.addApiReflected(new MyApi());
+  server.addApi(
+      new StaticFileHandler('/public/*', new Directory('./example/static/')));
   await server.serve();
 }

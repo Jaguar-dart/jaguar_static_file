@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 const String kHostname = 'localhost';
 
-const int kPort = 8080;
+const int kPort = 8081;
 
 final http.Client _client = new http.Client();
 
@@ -42,8 +42,16 @@ Future<Null> execGetStaticDirHello2() async {
   printHttpClientResponse(resp);
 }
 
+Future<Null> execGetPublicDirHello2() async {
+  String url = "http://$kHostname:$kPort/public/static/dir/hello2.txt";
+  http.Response resp = await _client.get(url);
+
+  printHttpClientResponse(resp);
+}
+
 main() async {
   await execGetFile();
   await execGetStaticDirHello1();
   await execGetStaticDirHello2();
+  await execGetPublicDirHello2();
 }
